@@ -24,6 +24,7 @@ mongoose.Promise = global.Promise;
 
 const restaurantSchema = new mongoose.Schema({
   id: Number,
+  name: String,
   menus: [{
     name: String,
     categories: [ String ],
