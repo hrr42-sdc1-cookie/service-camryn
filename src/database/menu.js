@@ -1,5 +1,11 @@
 const mongoose = require('mongoose');
 
-let db = mongoose.connect('mongodb://127.0.0.1/menu', { useNewUrlParser: true });
+mongoose.connect('mongodb://127.0.0.1/openT', { useNewUrlParser: true });
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log('mongoose is connected!');
+});
 
 module.exports = db;
