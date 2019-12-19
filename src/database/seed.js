@@ -291,6 +291,7 @@ var generateRestaurants = function (num) {
   for (var i = 1; i <= num; i++) {
     var rest = {
       id: i,
+      name: faker.company.companyName(),
       menus: null
     }
     var numMenus = Math.floor(Math.random() * 3) + 1;
@@ -354,9 +355,12 @@ var seedDB = function() {
 
 seedDB();
 
+// console.log(JSON.stringify(generateRestaurants(1)));
+
 var exampleJSON = [
   {
     "id": 1,
+    "name": "Farrell - Quigley",
     "menus": [
       {
         "name": "modi",
