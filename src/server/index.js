@@ -22,8 +22,8 @@ app.use(cors());
 //   MenuList.fetch("wine", res.send.bind(res));
 // });
 
-app.get('/api/menus/:restID', (req, res) => {
-  const id = parseInt(req.params.restID);
+app.get('/api/menus/:restaurantID', (req, res) => {
+  const id = parseInt(req.params.restaurantID);
   Menus.findOne({id: id}).lean()
     .then((doc) => {
       res.send(doc);
@@ -49,8 +49,8 @@ app.post('/api/menus', (req, res) => {
     })
 })
 
-app.put('/api/menus/:restID', (req, res) => {
-  const id = parseInt(req.params.restID);
+app.put('/api/menus/:restaurantID', (req, res) => {
+  const id = parseInt(req.params.restaurantID);
   const body = req.body;
   Menus.findOneAndUpdate({ id: id }, body)
     .then((doc) => {
@@ -62,8 +62,8 @@ app.put('/api/menus/:restID', (req, res) => {
     })
 })
 
-app.delete('/api/menus/:restID', (req, res) => {
-  const id = parseInt(req.params.restID);
+app.delete('/api/menus/:restaurantID', (req, res) => {
+  const id = parseInt(req.params.restaurantID);
   Menus.deleteOne({ id: id })
     .then(() => {
       res.send(200);
