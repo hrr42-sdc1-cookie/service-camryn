@@ -25,7 +25,7 @@ describe('App component', () => {
     expect(wrapper.find(Menu)).to.have.lengthOf(1);
   });
 
-  it('renders one SingleItem component, () => {
+  it('renders one SingleItem component', () => {
     let wrapper = shallow(<App />);
     expect(wrapper.find(SingleItem)).to.have.lengthOf(1);
   });
@@ -37,6 +37,4 @@ describe('Menu component', () => {
     let wrapper = shallow(<App />);
     expect(wrapper.find('.list')).to.have.lengthOf(1);
   });
-
-
-
+});
