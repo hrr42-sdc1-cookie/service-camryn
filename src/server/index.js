@@ -13,15 +13,6 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(__dirname + '/../../dist'));
 app.use(cors());
 
-// app.get('/api/dinner', function(req, res) {
-//   res.status(200);
-//   MenuList.fetch("dinner", res.send.bind(res));
-// });
-// app.get('/api/wine', function(req, res) {
-//   res.status(200);
-//   MenuList.fetch("wine", res.send.bind(res));
-// });
-
 app.get('/api/menus/:restaurantID', (req, res) => {
   const id = parseInt(req.params.restaurantID);
   Menus.findOne({id: id}).lean()
@@ -37,8 +28,8 @@ app.post('/api/menus', (req, res) => {
   const body = req.body;
   console.log(req.body);
   Menus.create({
-    id: body.id,
-    name: body.name,
+    restaurantID: body.id,
+    restaurantName: body.name,
   })
     .then((doc) => {
       console.log("New document created: ", doc);
@@ -52,7 +43,7 @@ app.post('/api/menus', (req, res) => {
 app.put('/api/menus/:restaurantID', (req, res) => {
   const id = parseInt(req.params.restaurantID);
   const body = req.body;
-  Menus.findOneAndUpdate({ id: id }, body)
+  Menus.findOneAndUpdate({ restaurantID: id }, body)
     .then((doc) => {
       res.send(200);
       console.log("Updated record: ", doc);
@@ -64,7 +55,7 @@ app.put('/api/menus/:restaurantID', (req, res) => {
 
 app.delete('/api/menus/:restaurantID', (req, res) => {
   const id = parseInt(req.params.restaurantID);
-  Menus.deleteOne({ id: id })
+  Menus.deleteOne({ restaurantID: id })
     .then(() => {
       res.send(200);
     })
