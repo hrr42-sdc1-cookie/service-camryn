@@ -290,22 +290,27 @@ var generateRestaurants = function (num) {
   var data = [];
   for (var i = 1; i <= num; i++) {
     var rest = {
-      id: i,
-      name: faker.company.companyName(),
+      restaurantID: i,
+      restaurantName: faker.company.companyName(),
+      menuNames: [],
       menus: null
     }
     var numMenus = Math.floor(Math.random() * 3) + 1;
-    rest.menus = generateMenus(numMenus);
+    for (var j = 0; j<numMenus; j++) {
+      rest.menuNames.push(faker.lorem.word());
+    }
+    rest.menus = generateMenus(rest.menuNames);
     data.push(rest);
   }
   return data;
 }
 
-var generateMenus = function (num) {
+var generateMenus = function (arr) {
   var menus = [];
-  for (var i = 1; i <= num; i++) {
+  for (var i = 1; i <= arr.length; i++) {
     var menu = {
-      name: faker.lorem.word(),
+      menuID: i,
+      menuName: arr[i-1],
       categories: null,
       items: null
     }
@@ -331,9 +336,9 @@ var generateItems = function (array) {
     var num = Math.floor(Math.random() * 5) + 6;
     for (var j = 1; j <= num; j++) {
       var item = {
-        id: JSON.stringify(i) + JSON.stringify(j),
+        itemID: JSON.stringify(i) + JSON.stringify(j),
         category: array[i],
-        name: faker.lorem.word(),
+        itemName: faker.lorem.word(),
         description: faker.lorem.words(),
         price: '$' + faker.commerce.price()
       }
