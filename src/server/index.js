@@ -15,7 +15,7 @@ app.use(cors());
 
 app.get('/api/menus/:restaurantID', (req, res) => {
   const id = parseInt(req.params.restaurantID);
-  Menus.findOne({id: id}).lean()
+  Menus.findOne({restaurantID: id}).lean()
     .then((doc) => {
       res.send(doc);
     })
