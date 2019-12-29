@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 
-// import Menu from './Menu.jsx';
+import Menu from './Menu.jsx';
 import Buttons from './Buttons.jsx';
 import SingleItem from './SingleItem.jsx';
 
@@ -32,8 +32,8 @@ class App extends React.Component {
         this.setState({
           menuNames: data.menuNames,
           menus: data.menus,
-          menu: data.menus[0],
           menuIndex: 0,
+          menu: data.menus[0],
           categories: data.menus[0].categories,
           items: data.menus[0].items,
           showAll: false
@@ -68,10 +68,9 @@ class App extends React.Component {
             <Buttons menus={this.state.menuNames}/>
             <hr />
           </div>
-          {/* <div>
-            <Menu menu={this.state.menu}/>
-            <hr />
-          </div> */}
+          <div>
+            <Menu menu={this.state.menu} categories={this.state.categories}/>
+          </div>
 
         </div>
       )
