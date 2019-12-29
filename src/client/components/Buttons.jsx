@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Buttons = ({ menus, onButtonClick}) => {
+const Buttons = ({ currMenu, menus, onButtonClick}) => {
   return (
     <span>{menus.map((menu) =>
       <button className="menuButton" key={menus.indexOf(menu)} onClick={() =>

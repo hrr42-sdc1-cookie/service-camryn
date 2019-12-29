@@ -68,7 +68,7 @@ class App extends React.Component {
             <hr />
           </div>
           <div>
-            <Buttons menus={this.state.menuNames} onButtonClick={this.onButtonClick.bind(this)}/>
+            <Buttons currMenu={this.state.currMenu} menus={this.state.menuNames} onButtonClick={this.onButtonClick.bind(this)}/>
             <hr />
           </div>
           <div>
