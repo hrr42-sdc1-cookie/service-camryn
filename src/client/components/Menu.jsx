@@ -4,6 +4,7 @@ import React from 'react';
 const Menu = ({ menu, categories }) => {
   const subObj = {};
 
+
   // restructures menu items by category
   for (var i = 0; i < menu.items.length; i++) {
     const category = menu.items[i].category;

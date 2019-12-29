@@ -12,11 +12,9 @@ class App extends React.Component {
     super(props);
     this.state = {
       menuNames: null,
-      menus: null,
-      menu: null,
-      menuIndex: null,
+      menusObj: null,
+      currMenu: null,
       categories: null,
-      items: null,
       showAll: null
     }
   }
@@ -31,11 +29,9 @@ class App extends React.Component {
       success: data => {
         this.setState({
           menuNames: data.menuNames,
-          menus: data.menus,
-          menuIndex: 0,
-          menu: data.menus[0],
+          menusObj: data.menus,
+          currMenu: data.menus[0],
           categories: data.menus[0].categories,
-          items: data.menus[0].items,
           showAll: false
         });
       },
@@ -45,12 +41,19 @@ class App extends React.Component {
     });
   }
 
+  onButtonClick(menu) {
+    this.setState({
+      currMenu: this.state.menusObj[this.state.menuNames.indexOf(menu)],
+      categories: this.state.menusObj[this.state.menuNames.indexOf(menu)].categories
+    })
+  }
+
   componentDidMount() {
     this.getRestaurantData();
   }
 
   render() {
-    if (this.state.menu === null) {
+    if (this.state.currMenu === null) {
       return (
         <div className="menuTitle">
           <h5>Content is loading...</h5>
@@ -65,13 +68,12 @@ class App extends React.Component {
             <hr />
           </div>
           <div>
-            <Buttons menus={this.state.menuNames}/>
+            <Buttons menus={this.state.menuNames} onButtonClick={this.onButtonClick.bind(this)}/>
             <hr />
           </div>
           <div>
-            <Menu menu={this.state.menu} categories={this.state.categories}/>
+            <Menu menu={this.state.currMenu} categories={this.state.categories}/>
           </div>
-
         </div>
       )
     }
