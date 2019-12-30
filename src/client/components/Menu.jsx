@@ -1,9 +1,7 @@
 import React from 'react';
-// import SingleItem from './SingleItem.jsx';
 
 const Menu = ({ menu, categories }) => {
   const subObj = {};
-
 
   // restructures menu items by category
   for (var i = 0; i < menu.items.length; i++) {
@@ -15,7 +13,6 @@ const Menu = ({ menu, categories }) => {
       subObj[category] = [item];
     }
   }
-
 
   return(
     <div>
@@ -39,6 +36,5 @@ const Menu = ({ menu, categories }) => {
   );
 
 };
-
 
 export default Menu;
