@@ -26,13 +26,11 @@ app.get('/api/menus/:restaurantID', (req, res) => {
 
 app.post('/api/menus', (req, res) => {
   const body = req.body;
-  console.log(req.body);
   Menus.create({
     restaurantID: body.id,
     restaurantName: body.name,
   })
     .then((doc) => {
-      console.log("New document created: ", doc);
       res.send(201);
     })
     .catch((err) => {
@@ -46,7 +44,6 @@ app.put('/api/menus/:restaurantID', (req, res) => {
   Menus.findOneAndUpdate({ restaurantID: id }, body)
     .then((doc) => {
       res.send(200);
-      console.log("Updated record: ", doc);
     })
     .catch((err) => {
       console.log("Error updating record: ", err);
