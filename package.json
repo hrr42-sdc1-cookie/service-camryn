@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "nodemon src/server/index.js",
+    "startM": "nodemon src/server/mariadb.js",
     "build": "webpack -d --watch",
     "seed": "node src/database/seed.js",
     "test": "jest --coverage --detectOpenHandles"

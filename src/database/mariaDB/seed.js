@@ -1,9 +1,9 @@
 const faker = require('faker');
+const maria = require('./index.js');
 
-const seedScript = {
+const mariaSeed = {
 
   generateRestaurants: function (num) {
-    var data = [];
     for (var i = 1; i <= num; i++) {
       var rest = {
         restaurantID: i,
@@ -15,10 +15,11 @@ const seedScript = {
       for (var j = 0; j < numMenus; j++) {
         rest.menuNames.push(faker.lorem.word());
       }
-      rest.menus = seedScript.generateMenus(rest.menuNames);
-      data.push(rest);
+      rest.menus = mariaSeed.generateMenus(rest.menuNames);
+      mariaSeed.seedMariaDB(rest);
     }
-    return data;
+    console.log('Finished generating restaurants.')
+    return;
   },
 
   generateMenus: function (arr) {
@@ -31,8 +32,8 @@ const seedScript = {
         items: null
       }
       var cats = Math.floor(Math.random() * 4) + 2;
-      menu.categories = seedScript.generateCategories(cats);
-      menu.items = seedScript.generateItems(menu.categories);
+      menu.categories = mariaSeed.generateCategories(cats);
+      menu.items = mariaSeed.generateItems(menu.categories);
       menus.push(menu);
     }
     return menus;
@@ -64,9 +65,10 @@ const seedScript = {
     return items;
   },
 
-  seedWithMariaDB: function() {
-    /* TODO */
+  seedMariaDB: function(obj) {
+
   }
+
 }
 
-module.exports = seedScript;
+module.exports = mariaSeed;
