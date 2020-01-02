@@ -58,7 +58,13 @@
   font-weight:500;
   color:	rgb(64,64,64);
 }
-.menuButton:focus{
+.menuButtonTrue{
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 12px;
+  padding: 8px;
+  margin: 8px 8px 8px 0px;
+  font-weight:500;
+  color:	rgb(64,64,64);
   outline: red auto 2px;
 }
 

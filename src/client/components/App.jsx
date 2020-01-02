@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 
 import Menu from './Menu.jsx';
+import Buttons from './Buttons.jsx';
 import SingleItem from './SingleItem.jsx';
 
 
@@ -10,103 +11,72 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'dinner',
-      postData: []
+      menuNames: null,
+      menusObj: null,
+      currMenu: null,
+      categories: null,
+      showAll: null
     }
   }
 
-  UpdateDinnerMenu() {
+  getRestaurantData() {
+    var url = window.location.href;
+    var id = url.split('=')[1];
+
     $.ajax({
-      url: '/api/dinner',
+      url: `/api/menus/${id}`,
       method: 'GET',
-      success: data => { console.log(data);
-      this.setState({view: 'dinner', postData: data});
+      success: data => {
+        this.setState({
+          menuNames: data.menuNames,
+          menusObj: data.menus,
+          currMenu: data.menus[0],
+          categories: data.menus[0].categories,
+          showAll: false
+        });
       },
-      error: () => {console.log('GET error!');}
+      error: (err) => {
+        console.log('GET error: ', err);
+      }
     });
   }
 
-  UpdateWineMenu() {
-    $.ajax({
-      url: '/api/wine',
-      method: 'GET',
-      success: data => { console.log(data);
-      this.setState({view: 'wine', postData: data});
-      },
-      error: () => {console.log('GET error!');}
-    });
+  onButtonClick(menu) {
+    this.setState({
+      currMenu: this.state.menusObj[this.state.menuNames.indexOf(menu)],
+      categories: this.state.menusObj[this.state.menuNames.indexOf(menu)].categories
+    })
   }
 
   componentDidMount() {
-    this.UpdateDinnerMenu();
-  }
-
-  renderView() {
-    const {view} = this.state;
-
-    if (view === 'dinner') {
-      let starters = this.state.postData.filter(function(meal) {
-        return meal.category === 'Starters'
-      });
-      let steaks = this.state.postData.filter(function(meal) {
-        return meal.category === 'Steaks & Chops'
-      });
-      let bone = this.state.postData.filter(function(meal) {
-        return meal.category === 'Bone-In Cuts'
-      });
-      let seafood = this.state.postData.filter(function(meal) {
-        return meal.category === 'Seafood'
-      });
-
-      return (
-        <div className='lists'>
-          <div className='list1'>Starters</div>
-          <Menu menuList={starters} />
-          <hr />
-          <div className='list2'>Steaks & Chops</div>
-          <Menu menuList={steaks} />
-          <hr />
-          <div className='list3'>Bone-In Cuts</div>
-          <Menu menuList={bone} />
-          <hr />
-          <div className='list4'>Seafood</div>
-          <Menu menuList={seafood} />
-          <hr />
-        </div>
-
-      );
-  } else {
-    return (
-      <div>
-      <div className='list5'>Wine</div>
-
-      <Menu menuList={this.state.postData} />
-      </div>
-    )
-  }
-
+    this.getRestaurantData();
   }
 
   render() {
-    return (
-      <div>
+    if (this.state.currMenu === null) {
+      return (
         <div className="menuTitle">
-        <h5>Menu</h5>
-        <hr />
+          <h5>Content is loading...</h5>
+          <hr />
         </div>
-
+      )
+    } else if (this.state.showAll === false) {
+      return (
         <div>
-        <span><button className="menuButton" onClick={() => this.UpdateDinnerMenu()} > Dinner Menu </button></span>
-        <span><button className="menuButton" onClick={() => this.UpdateWineMenu()} > Wine List </button></span>
-        <hr />
+          <div className="menuTitle">
+            <h5>Menu</h5>
+            <hr />
+          </div>
+          <div>
+            <Buttons currMenu={this.state.currMenu} menus={this.state.menuNames} onButtonClick={this.onButtonClick.bind(this)}/>
+            <hr />
+          </div>
+          <div>
+            <Menu menu={this.state.currMenu} categories={this.state.categories}/>
+          </div>
         </div>
-
-        <div>
-          {this.renderView()}
-        </div>
-
-      </div>
-    )
+      )
+    }
   }
 
 }
