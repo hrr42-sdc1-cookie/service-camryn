@@ -1,74 +1,51 @@
 const faker = require('faker');
 const maria = require('./index.js');
+const csv = require('objects-to-csv');
 
-const mariaSeed = {
-
-  generateRestaurants: function (num) {
-    for (var i = 1; i <= num; i++) {
-      var rest = {
-        restaurantID: i,
-        restaurantName: faker.company.companyName(),
-        menuNames: [],
-        menus: null
-      }
-      var numMenus = Math.floor(Math.random() * 3) + 1;
-      for (var j = 0; j < numMenus; j++) {
-        rest.menuNames.push(faker.lorem.word());
-      }
-      rest.menus = mariaSeed.generateMenus(rest.menuNames);
-      mariaSeed.seedMariaDB(rest);
-    }
-    console.log('Finished generating restaurants.')
-    return;
-  },
-
-  generateMenus: function (arr) {
-    var menus = [];
-    for (var i = 1; i <= arr.length; i++) {
-      var menu = {
-        menuID: i,
-        menuName: arr[i - 1],
-        categories: null,
-        items: null
-      }
-      var cats = Math.floor(Math.random() * 4) + 2;
-      menu.categories = mariaSeed.generateCategories(cats);
-      menu.items = mariaSeed.generateItems(menu.categories);
-      menus.push(menu);
-    }
-    return menus;
-  },
-
-  generateCategories: function (num) {
-    var categories = [];
-    for (var i = 1; i <= num; i++) {
-      categories.push(faker.lorem.word());
-    }
-    return categories;
-  },
-
-  generateItems: function (array) {
-    var items = [];
-    for (var i = 0; i < array.length; i++) {
-      var num = Math.floor(Math.random() * 5) + 6;
-      for (var j = 1; j <= num; j++) {
-        var item = {
-          itemID: JSON.stringify(i) + JSON.stringify(j),
-          category: array[i],
-          itemName: faker.lorem.word(),
-          description: faker.lorem.words(),
-          price: '$' + faker.commerce.price()
+const generateRestaurants = function (num) {
+  var restaurants = [];
+  var menus = [];
+  var categories = [];
+  var items = [];
+  for (var i = 0; i < num; i++) {
+    var numM = Math.floor(Math.random() * 3) + 1;
+    restaurants.push({
+      id: restaurants.length + 1,
+      name: faker.company.companyName()
+    });
+    for (var j = 0; j < numM; j++) {
+      var numC = Math.floor(Math.random() * 4) + 2;
+      menus.push({
+        id: menus.length + 1,
+        name: faker.lorem.word(),
+        restaurantId: restaurants.length
+      });
+      for (var k = 0; k < numC; k++) {
+        var numI = Math.floor(Math.random() * 5) + 6;
+        categories.push({
+          id: categories.length + 1,
+          name: faker.lorem.word(),
+          menuId: menus.length,
+          restaurantId: restaurants.length
+        });
+        for (var l = 0; l < numI; l++) {
+          items.push({
+            id: items.length + 1,
+            name: faker.lorem.word(),
+            description: faker.lorem.words(),
+            price: '$' + faker.commerce.price(),
+            categoryId: categories.length,
+            menuId: menus.length,
+            restaurantId: restaurants.length
+          });
         }
-        items.push(item);
       }
     }
-    return items;
-  },
-
-  seedMariaDB: function(obj) {
-
   }
-
+  new csv(restaurants).toDisk('./csv/restaurants.csv');
+  new csv(menus).toDisk('./csv/menus.csv');
+  new csv(categories).toDisk('./csv/categories.csv');
+  new csv(items).toDisk('./csv/items.csv');
 }
 
-module.exports = mariaSeed;
+generateRestaurants(10000000);

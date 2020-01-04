@@ -5,25 +5,14 @@ const pool = mariadb.createPool({
   connectionLimit: 10
 });
 
-const maria = pool.getConnection()
-  .then((conn) => {
-    console.log('mariadb is connected! connection id: ', conn.threadId);
-    conn.release();
-  }).catch((err) => {
-    console.log('error connecting to mariadb: ', err);
-});
-
-// mariadb.createConnection({
-//     host: 'localhost',
-//     user: 'root',
-//     password: ''
-//   })
+// const maria = pool.getConnection()
 //   .then((conn) => {
-//     console.log("Connected! connection id is: ", conn.threadId);
-//   })
-//   .catch((err) => {
+//     console.log('mariadb is connected! connection id: ', conn.threadId);
+//     conn.query("USE openT")
+//       .then()
+//   }).catch((err) => {
 //     console.log('error connecting to mariadb: ', err);
 // });
 
 
-module.exports = maria;
+module.exports = pool;

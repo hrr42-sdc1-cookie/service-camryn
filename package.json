@@ -12,6 +12,7 @@
     "startM": "nodemon src/server/mariadb.js",
     "build": "webpack -d --watch",
     "seed": "node src/database/seed.js",
+    "seedM": "node src/database/mariaDB/seed.js",
     "test": "jest --coverage --detectOpenHandles"
   },
   "dependencies": {
@@ -26,6 +27,7 @@
     "mongodb": "^3.3.5",
     "mongoose": "^5.7.13",
     "nodemon": "^2.0.1",
+    "objects-to-csv": "^1.3.5",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "serialize-javascript": "^2.1.2",
