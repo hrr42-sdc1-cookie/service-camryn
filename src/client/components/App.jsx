@@ -4,8 +4,6 @@ import $ from 'jquery';
 
 import Menu from './Menu.jsx';
 import Buttons from './Buttons.jsx';
-import SingleItem from './SingleItem.jsx';
-
 
 class App extends React.Component {
   constructor(props) {
@@ -78,6 +76,6 @@ class App extends React.Component {
       )
     }
   }
-
 }
+
 export default App;
