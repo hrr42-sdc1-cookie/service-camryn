@@ -1,51 +1,111 @@
+var startTime = Date.now();
+
 const faker = require('faker');
 const maria = require('./index.js');
 const csv = require('objects-to-csv');
 
+const chunk = 2000;
+
 const generateRestaurants = function (num) {
-  var restaurants = [];
-  var menus = [];
-  var categories = [];
-  var items = [];
-  for (var i = 0; i < num; i++) {
-    var numM = Math.floor(Math.random() * 3) + 1;
-    restaurants.push({
-      id: restaurants.length + 1,
-      name: faker.company.companyName()
-    });
-    for (var j = 0; j < numM; j++) {
-      var numC = Math.floor(Math.random() * 4) + 2;
-      menus.push({
-        id: menus.length + 1,
-        name: faker.lorem.word(),
-        restaurantId: restaurants.length
+  const records = 10000000;
+
+  const generate = function (startR, startM, startC, startI) {
+
+
+    var restaurants = {
+      start: startR,
+      arr: []
+    }
+    var menus = {
+      start: startM,
+      arr: []
+    }
+    var categories = {
+      start: startC,
+      arr: []
+    }
+    var items = {
+      start: startI,
+      arr: []
+    }
+
+    for (var i = 0; i < num; i++) {
+      var numM = Math.floor(Math.random() * 3) + 1;
+      restaurants.arr.push({
+        id: restaurants.start + 1,
+        name: faker.company.companyName()
       });
-      for (var k = 0; k < numC; k++) {
-        var numI = Math.floor(Math.random() * 5) + 6;
-        categories.push({
-          id: categories.length + 1,
+      restaurants.start++;
+
+      for (var j = 0; j < numM; j++) {
+        var numC = Math.floor(Math.random() * 3) + 2;
+        menus.arr.push({
+          id: menus.start + 1,
           name: faker.lorem.word(),
-          menuId: menus.length,
-          restaurantId: restaurants.length
+          restaurantId: restaurants.start
         });
-        for (var l = 0; l < numI; l++) {
-          items.push({
-            id: items.length + 1,
+        menus.start++;
+
+        for (var k = 0; k < numC; k++) {
+          var numI = Math.floor(Math.random() * 5) + 6;
+          categories.arr.push({
+            id: categories.start + 1,
             name: faker.lorem.word(),
-            description: faker.lorem.words(),
-            price: '$' + faker.commerce.price(),
-            categoryId: categories.length,
-            menuId: menus.length,
-            restaurantId: restaurants.length
+            menuId: menus.start,
+            restaurantId: restaurants.start
           });
+          categories.start++;
+
+          for (var l = 0; l < numI; l++) {
+            items.arr.push({
+              id: items.start + 1,
+              name: faker.lorem.word(),
+              description: faker.lorem.words(),
+              price: '$' + faker.commerce.price(),
+              categoryId: categories.start,
+              menuId: menus.start,
+              restaurantId: restaurants.start
+            });
+            items.start++;
+          }
         }
       }
     }
+
+    (async () => {
+      const csv1 = new csv(restaurants.arr);
+      await csv1.toDisk('./src/database/csv/restaurants.csv', { append: true });
+
+      const csv2 = new csv(menus.arr);
+      await csv2.toDisk('./src/database/csv/menus.csv', { append: true });
+
+      const csv3 = new csv(categories.arr)
+      await csv3.toDisk('./src/database/csv/categories.csv', { append: true });
+
+      const csv4 = new csv(items.arr)
+      await csv4.toDisk('./src/database/csv/items.csv', { append: true });
+
+      if (restaurants.start >= records) {
+        const time = Date.now() - startTime;
+        const hours = Math.floor(time / 3600000);
+        const min = Math.floor((time - (hours * 36000000)) / 60000);
+        const seconds = Math.floor((time - (hours * 3600000) - (min * 60000)) / 1000);
+        console.log(`Data generation complete. Time elapsed: ${hours} hours, ${min} minutes, ${seconds} seconds`);
+        return;
+      } else {
+
+        setTimeout(() => {
+
+          console.log(`${((restaurants.start/records) * 100).toFixed(2)}% complete`)
+          generate(restaurants.start, menus.start, categories.start, items.start);
+        }, 0)
+      }
+    })();
+
   }
-  new csv(restaurants).toDisk('./csv/restaurants.csv');
-  new csv(menus).toDisk('./csv/menus.csv');
-  new csv(categories).toDisk('./csv/categories.csv');
-  new csv(items).toDisk('./csv/items.csv');
+
+  generate(0, 0, 0, 0);
+
 }
 
-generateRestaurants(10000000);
+generateRestaurants(chunk);
