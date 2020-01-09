@@ -88,7 +88,7 @@ const generateRestaurants = function (num) {
       if (restaurants.start >= records) {
         const time = Date.now() - startTime;
         const hours = Math.floor(time / 3600000);
-        const min = Math.floor((time - (hours * 36000000)) / 60000);
+        const min = Math.floor((time - (hours * 3600000)) / 60000);
         const seconds = Math.floor((time - (hours * 3600000) - (min * 60000)) / 1000);
         console.log(`Data generation complete. Time elapsed: ${hours} hours, ${min} minutes, ${seconds} seconds`);
         return;

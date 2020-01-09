@@ -4,18 +4,18 @@ USE openT;
 
 CREATE TABLE restaurants (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  name varchar(100)
+  name varchar(100) NOT NULL
 );
 
 CREATE TABLE menus (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  name varchar(100),
+  name varchar(100) NOT NULL,
   restaurantId INT NOT NULL
 );
 
 CREATE TABLE categories (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  name varchar(100),
+  name varchar(100) NOT NULL,
   menuId INT NOT NULL,
   restaurantId INT NOT NULL
 );
