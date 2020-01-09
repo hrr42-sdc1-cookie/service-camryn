@@ -9,8 +9,10 @@
   },
   "scripts": {
     "start": "nodemon src/server/index.js",
+    "startM": "nodemon src/server/mariadb.js",
     "build": "webpack -d --watch",
     "seed": "node src/database/seed.js",
+    "seedM": "node src/database/mariaDB/seed.js",
     "test": "jest --coverage --detectOpenHandles"
   },
   "dependencies": {
@@ -21,9 +23,11 @@
     "express": "^4.17.1",
     "faker": "^4.1.0",
     "jquery": "^3.4.1",
+    "mariadb": "^2.1.4",
     "mongodb": "^3.3.5",
     "mongoose": "^5.7.13",
     "nodemon": "^2.0.1",
+    "objects-to-csv": "^1.3.5",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "serialize-javascript": "^2.1.2",
